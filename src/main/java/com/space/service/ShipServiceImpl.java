@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ShipServiceImpl implements ShipService{
@@ -16,37 +17,26 @@ public class ShipServiceImpl implements ShipService{
 
     @Override
     public List<Ship> getAllShips() {
-
-        return null;
+        return shipRepository.findAll();
     }
 
     @Override
     public Ship addShip(Ship ship) {
-        return null;
+        return shipRepository.save(ship);
     }
 
     @Override
-    public Ship editShip(Ship ship) {
-        return null;
+    public Ship updateShip(Ship ship) {
+        return shipRepository.save(ship);
     }
 
     @Override
-    public void deleteShip(Long id) {
-
+    public void deleteShip(long id) {
+        shipRepository.deleteById(id);
     }
 
     @Override
-    public Ship getShipById(Long id) {
-        return null;
-    }
-
-    @Override
-    public List<Ship> getSelectedShips() {
-        return null;
-    }
-
-    @Override
-    public int countSelectedShips(List<Ship> selected) {
-        return 0;
+    public Optional<Ship> getShipById(long id) {
+        return shipRepository.findById(id);
     }
 }
