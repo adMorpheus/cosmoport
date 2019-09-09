@@ -12,7 +12,7 @@ public interface ShipService {
 
     List<Ship> getAllShips(Pageable pageable);
     Ship addShip(Ship ship);
-    Ship updateShip(Ship ship);
+    Ship updateShip(Long id, Ship ship);
     void deleteShip(long id);
     Ship getShipById(Long id);
 }

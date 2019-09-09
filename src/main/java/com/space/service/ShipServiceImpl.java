@@ -32,12 +32,18 @@ public class ShipServiceImpl implements ShipService {
     }
 
     @Override
-    public Ship updateShip(Ship ship) {
-                ship.setRating(generateRating(ship));
-        System.out.println("service ship = " + ship);
-        System.out.println("generateRating(ship) = " + generateRating(ship));
-        shipRepository.saveAndFlush(ship);
-        return ship;
+    public Ship updateShip(Long id, Ship dstShip) {
+        System.out.println("processing service UPDATE ship");
+        Ship originalShip = getShipById(id);
+         if (dstShip.getName()!=null){originalShip.setName(dstShip.getName());}
+         if (dstShip.getPlanet()!=null){originalShip.setPlanet(dstShip.getPlanet());}
+         if (dstShip.getProdDate()!=null){originalShip.setProdDate(dstShip.getProdDate());}
+         if (dstShip.getUsed()!=null){originalShip.setUsed(dstShip.getUsed());}
+         if (dstShip.getSpeed()!=null){originalShip.setSpeed(dstShip.getSpeed());}
+         if (dstShip.getCrewSize()!=null){originalShip.setCrewSize(dstShip.getCrewSize());}
+            originalShip.setRating(generateRating(originalShip));
+
+        return shipRepository.saveAndFlush(originalShip);
     }
 
     @Override

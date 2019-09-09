@@ -79,15 +79,11 @@ public class MainController {
     }
 
     @PostMapping("/ships/{id}")
-    public Ship updateShip(@PathVariable("id") Long id) {
-        try {
-            System.out.println("processing UPDATE ship");
-            Ship ship = shipService.getShipById(id);
-            return shipService.updateShip(ship);
-        } catch (Exception e) {
-            System.out.println(e);
-            return null;
-        }
+    public Ship updateShip(@PathVariable("id") Long id, @RequestBody Ship ship) {
+        System.out.println("Ship in controll: " + ship);
+       return shipService.updateShip(id,ship);
+
+
     }
 
     @DeleteMapping("/ships/{id}")
