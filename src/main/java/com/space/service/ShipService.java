@@ -14,5 +14,5 @@ public interface ShipService {
     Ship addShip(Ship ship);
     Ship updateShip(Ship ship);
     void deleteShip(long id);
-    Optional<Ship> getShipById(long id);
+    Ship getShipById(Long id);
 }
