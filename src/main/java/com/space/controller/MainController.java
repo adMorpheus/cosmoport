@@ -64,23 +64,19 @@ public class MainController {
     public Ship addShip(@RequestBody Ship ship) {
         System.out.println("processing CREATE ship");
         System.out.println(ship.toString());
-        try {
-            shipService.addShip(ship);
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+
+                  shipService.addShip(ship);
+
         return ship;
     }
 
     @GetMapping("/ships/{id}")
     public Ship getShipById(@PathVariable("id") Long id) {
-        System.out.println("getting ship BY ID");
         return shipService.getShipById(id);
     }
 
     @PostMapping("/ships/{id}")
     public Ship updateShip(@PathVariable("id") Long id, @RequestBody Ship ship) {
-        System.out.println("Ship in controll: " + ship);
        return shipService.updateShip(id,ship);
 
 
