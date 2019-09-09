@@ -5,7 +5,8 @@ import java.util.Date;
 
 @Entity
 
-public class Ship {
+public class Ship {//todo: add max lenght for name and planet field
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
