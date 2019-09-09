@@ -17,7 +17,6 @@ public class MainController {
     ShipService shipService;
 
     @GetMapping("/ships")
-//    @RequestMapping(value = "/ships", method = RequestMethod.GET)
     public List<Ship> getAllShips(@RequestParam(value = "name", required = false) String name,
                                   @RequestParam(value = "planet", required = false) String planet,
                                   @RequestParam(value = "shipType", required = false) ShipType shipType,
@@ -64,6 +63,7 @@ public class MainController {
     @PostMapping("/ships")
     public Ship addShip(@RequestBody Ship ship) {
         System.out.println("processing CREATE ship");
+        System.out.println(ship.toString());
         try {
             shipService.addShip(ship);
         } catch (Exception e) {

@@ -27,12 +27,17 @@ public class ShipServiceImpl implements ShipService {
 
     @Override
     public Ship addShip(Ship ship) {
-        return shipRepository.saveAndFlush(ship);
+        shipRepository.saveAndFlush(ship);
+        return ship;
     }
 
     @Override
     public Ship updateShip(Ship ship) {
-        return shipRepository.saveAndFlush(ship);
+                ship.setRating(generateRating(ship));
+        System.out.println("service ship = " + ship);
+        System.out.println("generateRating(ship) = " + generateRating(ship));
+        shipRepository.saveAndFlush(ship);
+        return ship;
     }
 
     @Override

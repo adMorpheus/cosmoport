@@ -8,7 +8,7 @@ import java.util.Date;
 public class Ship {//todo: add max lenght for name and planet field
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String planet;
@@ -109,5 +109,21 @@ public class Ship {//todo: add max lenght for name and planet field
 
     public void setRating(Double rating) {
         this.rating = rating;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Ship{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", planet='" + planet + '\'' +
+                ", shipType=" + shipType +
+                ", prodDate=" + prodDate +
+                ", isUsed=" + isUsed +
+                ", speed=" + speed +
+                ", crewSize=" + crewSize +
+                ", rating=" + rating +
+                '}';
     }
 }
