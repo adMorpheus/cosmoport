@@ -4,6 +4,7 @@ import com.space.model.Ship;
 import com.space.repository.ShipRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -21,8 +22,8 @@ public class ShipServiceImpl implements ShipService {
         return shipRepository.findAll();
     }
 
-    public List<Ship> getAllShips(Pageable pageable) {
-        return shipRepository.findAll(pageable).getContent();
+    public List<Ship> getAllShips(Specification<Ship> spec, Pageable pageable) {
+        return shipRepository.findAll(spec, pageable).getContent();
     }
 
     @Override
@@ -153,4 +154,5 @@ public class ShipServiceImpl implements ShipService {
                 ship.getCrewSize() > 0 &&
                 ship.getCrewSize() <= 9999;
     }
+
 }
