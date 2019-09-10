@@ -40,18 +40,19 @@ public class ShipServiceImpl implements ShipService {
             ship.setUsed(false);
         }
         System.out.println("ship.getUsed() = " + ship.getUsed());
+        ship.setRating(generateRating(ship));
         shipRepository.saveAndFlush(ship);
         return ship;
     }
 
     @Override
     public Ship updateShip(Long id, Ship dstShip) {
-        System.out.println("processing service UPDATE ship");
         if (!isIdValid(id)) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+
         if (!isIdExist(id)) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+
         Ship originalShip = getShipById(id);
-        System.out.println("dstShip =      " + dstShip);
-        System.out.println("originalShip = " + originalShip);
+
         if (dstShip.getName() == null &&
                 dstShip.getPlanet() == null &&
                 dstShip.getShipType() == null &&
@@ -76,8 +77,6 @@ public class ShipServiceImpl implements ShipService {
 
             originalShip.setRating(generateRating(originalShip));
 
-
-        System.out.println("originalShip = " + originalShip);
 
         if (!isParametrsInRange(originalShip)) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
