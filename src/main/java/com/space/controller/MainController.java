@@ -114,82 +114,60 @@ public class MainController {
     }
 
     private Specification<Ship> filterByPlanet(String planet) {
-        return new Specification<Ship>() {
-            @Override
-            public Predicate toPredicate(Root<Ship> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-                if (planet != null) {
-                    return criteriaBuilder.like(root.get("planet"), "%" + planet + "%");
-                }
-                return null;
+        return (Specification<Ship>) (root, query, criteriaBuilder) -> {
+            if (planet != null) {
+                return criteriaBuilder.like(root.get("planet"), "%" + planet + "%");
             }
+            return null;
         };
     }
 
     private Specification<Ship> filterByShipType(ShipType shipType) {
-        return new Specification<Ship>() {
-            @Override
-            public Predicate toPredicate(Root<Ship> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-                if (shipType != null) return criteriaBuilder.equal(root.get("shipType"), shipType);
-                return null;
-            }
+        return (Specification<Ship>) (root, query, criteriaBuilder) -> {
+            if (shipType != null) return criteriaBuilder.equal(root.get("shipType"), shipType);
+            return null;
         };
     }
 
     private Specification<Ship> filterByDate(Long after, Long before) {
 
-        return new Specification<Ship>() {
-            @Override
-            public Predicate toPredicate(Root<Ship> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-                if (after == null && before == null) {
-                    return null;
-                }
-                if (after == null) {
-                    Date beforeDate = new Date(before);
-                    return criteriaBuilder.lessThanOrEqualTo(root.get("prodDate"), beforeDate);
-                }
-                if (before == null) {
-                    Date afterDate = new Date(after);
-                    return criteriaBuilder.greaterThanOrEqualTo(root.get("prodDate"), afterDate);
-                }
-                Date beforeDate = new Date(before);
-                Date afterDate = new Date(after);
-                return criteriaBuilder.between(root.get("prodDate"), afterDate, beforeDate);
+        return (Specification<Ship>) (root, query, criteriaBuilder) -> {
+            if (after == null && before == null) {
+                return null;
             }
+            if (after == null) {
+                Date beforeDate = new Date(before);
+                return criteriaBuilder.lessThanOrEqualTo(root.get("prodDate"), beforeDate);
+            }
+            if (before == null) {
+                Date afterDate = new Date(after);
+                return criteriaBuilder.greaterThanOrEqualTo(root.get("prodDate"), afterDate);
+            }
+            Date beforeDate = new Date(before);
+            Date afterDate = new Date(after);
+            return criteriaBuilder.between(root.get("prodDate"), afterDate, beforeDate);
         };
     }
 
     private Specification<Ship> filterByInUsed(Boolean inUsed) {
         if (inUsed == null) return null;
-        if (inUsed) return new Specification<Ship>() {
-            @Override
-            public Predicate toPredicate(Root<Ship> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-                return criteriaBuilder.isTrue(root.get("isUsed"));
-            }
-        };
-        return new Specification<Ship>() {
-            @Override
-            public Predicate toPredicate(Root<Ship> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-                return criteriaBuilder.isFalse(root.get("isUsed"));
-            }
-        };
+        if (inUsed) return (Specification<Ship>) (root, query, criteriaBuilder) -> criteriaBuilder.isTrue(root.get("isUsed"));
+        return (Specification<Ship>) (root, query, criteriaBuilder) -> criteriaBuilder.isFalse(root.get("isUsed"));
     }
 
     private Specification<Ship> filterBySpeed(Double min, Double max) {
 
-        return new Specification<Ship>() {
-            @Override
-            public Predicate toPredicate(Root<Ship> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-                if (min == null && max == null) {
-                    return null;
-                }
-                if (min == null) {
-                    return criteriaBuilder.lessThanOrEqualTo(root.get("speed"), max);
-                }
-                if (max == null) {
-                    return criteriaBuilder.greaterThanOrEqualTo(root.get("speed"), min);
-                }
-                return criteriaBuilder.between(root.get("speed"), min, max);
+        return (Specification<Ship>) (root, query, criteriaBuilder) -> {
+            if (min == null && max == null) {
+                return null;
             }
+            if (min == null) {
+                return criteriaBuilder.lessThanOrEqualTo(root.get("speed"), max);
+            }
+            if (max == null) {
+                return criteriaBuilder.greaterThanOrEqualTo(root.get("speed"), min);
+            }
+            return criteriaBuilder.between(root.get("speed"), min, max);
         };
     }
 

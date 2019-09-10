@@ -28,12 +28,13 @@ public class ShipServiceImpl implements ShipService {
 
     @Override
     public Ship addShip(Ship ship) {
-        if (!isNameValid(ship.getName()) ||
-                !isPlanetValid(ship.getPlanet()) ||
+        if (ship.getName() == null ||
+                ship.getPlanet() == null ||
                 ship.getShipType() == null ||
-                !isSpeedValid(ship.getSpeed()) ||
-                !isCrewSizeValid(ship.getCrewSize()) ||
-                !isProdDateValid(ship.getProdDate())) {
+                ship.getSpeed() == null ||
+                ship.getCrewSize() == null ||
+                ship.getProdDate() == null ||
+                !isParametrsInRange(ship)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
         System.out.println("ship.getUsed() = " + ship.getUsed());
@@ -76,7 +77,7 @@ public class ShipServiceImpl implements ShipService {
 
         if (dstShip.getCrewSize() != null) originalShip.setCrewSize(dstShip.getCrewSize());
 
-            originalShip.setRating(generateRating(originalShip));
+        originalShip.setRating(generateRating(originalShip));
 
 
         if (!isParametrsInRange(originalShip)) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
@@ -127,21 +128,6 @@ public class ShipServiceImpl implements ShipService {
         return shipRepository.existsById(id);
     }
 
-    private boolean isNameValid(String name) {
-        return name != null && name != "" && name.length() <= 50;
-    }
-
-    private boolean isPlanetValid(String planet) {
-        return planet != null && planet != "" && planet.length() <= 50;
-    }
-
-    private boolean isSpeedValid(Double speed) {
-        return speed != null && speed >= 0.01 && speed <= 0.99;
-    }
-
-    private boolean isCrewSizeValid(Integer crewSize) {
-        return crewSize != null && crewSize >= 1 && crewSize <= 9999;
-    }
 
     private boolean isParametrsInRange(Ship ship) {
         return ship.getName().length() > 0 &&
