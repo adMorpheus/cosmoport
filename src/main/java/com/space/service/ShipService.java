@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ShipService {
-    List<Ship> getAllShips();
+    List<Ship> getAllShips(Specification<Ship> spec);
 
     List<Ship> getAllShips(Specification<Ship> spec, Pageable pageable);
     Ship addShip(Ship ship);

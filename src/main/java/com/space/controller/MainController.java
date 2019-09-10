@@ -14,7 +14,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.swing.plaf.ListUI;
 import java.util.Date;
 import java.util.List;
 
@@ -48,9 +47,9 @@ public class MainController {
                 .and(filterByShipType(shipType))
                 .and(filterByDate(after, before))
                 .and(filterByInUsed(isUsed))
-                .and(filterBySpeed(minSpeed,maxSpeed))
-                .and(filterByCrewSize(minCrewSize,maxCrewSize))
-                .and(filterByRating(minRating,maxRating))), pageable);
+                .and(filterBySpeed(minSpeed, maxSpeed))
+                .and(filterByCrewSize(minCrewSize, maxCrewSize))
+                .and(filterByRating(minRating, maxRating))), pageable);
     }
 
     @GetMapping("/ships/count")
@@ -61,13 +60,21 @@ public class MainController {
                              @RequestParam(value = "before", required = false) Long before,
                              @RequestParam(value = "isUsed", required = false) Boolean isUsed,
                              @RequestParam(value = "minSpeed", required = false) Double minSpeed,
+                             @RequestParam(value = "maxSpeed", required = false) Double maxSpeed,
                              @RequestParam(value = "minCrewSize", required = false) Integer minCrewSize,
                              @RequestParam(value = "maxCrewSize", required = false) Integer maxCrewSize,
                              @RequestParam(value = "minRating", required = false) Double minRating,
                              @RequestParam(value = "maxRating", required = false) Double maxRating,
                              @RequestParam(value = "order", required = false, defaultValue = "ID") ShipOrder order) {
         System.out.println("Processing Get COUNT");
-        return shipService.getAllShips().size();
+        return shipService.getAllShips(Specification.where(filterByName(name)
+                .and(filterByPlanet(planet))
+                .and(filterByShipType(shipType))
+                .and(filterByDate(after, before))
+                .and(filterByInUsed(isUsed))
+                .and(filterBySpeed(minSpeed, maxSpeed))
+                .and(filterByCrewSize(minCrewSize, maxCrewSize))
+                .and(filterByRating(minRating, maxRating)))).size();
     }
 
     @PostMapping("/ships")
@@ -152,8 +159,8 @@ public class MainController {
     }
 
     private Specification<Ship> filterByInUsed(Boolean inUsed) {
-        if (inUsed==null) return null;
-        if (inUsed)return new Specification<Ship>() {
+        if (inUsed == null) return null;
+        if (inUsed) return new Specification<Ship>() {
             @Override
             public Predicate toPredicate(Root<Ship> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
                 return criteriaBuilder.isTrue(root.get("isUsed"));
@@ -166,6 +173,7 @@ public class MainController {
             }
         };
     }
+
     private Specification<Ship> filterBySpeed(Double min, Double max) {
 
         return new Specification<Ship>() {
@@ -184,30 +192,32 @@ public class MainController {
             }
         };
     }
-   private Specification<Ship> filterByCrewSize(Integer min, Integer max) {
 
-        return (Specification<Ship>) (root, query, criteriaBuilder) ->{
-            if (min == null && max == null){
+    private Specification<Ship> filterByCrewSize(Integer min, Integer max) {
+
+        return (Specification<Ship>) (root, query, criteriaBuilder) -> {
+            if (min == null && max == null) {
                 return null;
             }
-            if (min == null){
+            if (min == null) {
                 return criteriaBuilder.lessThanOrEqualTo(root.get("crewSize"), max);
             }
-            if (max == null){
+            if (max == null) {
                 return criteriaBuilder.greaterThanOrEqualTo(root.get("crewSize"), min);
             }
             return criteriaBuilder.between(root.get("crewSize"), min, max);
         };
     }
-   private Specification<Ship> filterByRating(Double min, Double max) {
-        return (Specification<Ship>) (root, query, criteriaBuilder) ->{
-            if (min == null && max == null){
+
+    private Specification<Ship> filterByRating(Double min, Double max) {
+        return (Specification<Ship>) (root, query, criteriaBuilder) -> {
+            if (min == null && max == null) {
                 return null;
             }
-            if (min == null){
+            if (min == null) {
                 return criteriaBuilder.lessThanOrEqualTo(root.get("rating"), max);
             }
-            if (max == null){
+            if (max == null) {
                 return criteriaBuilder.greaterThanOrEqualTo(root.get("rating"), min);
             }
             return criteriaBuilder.between(root.get("rating"), min, max);
